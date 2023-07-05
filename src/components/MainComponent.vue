@@ -3,6 +3,7 @@
 </template>
 
 <script>
+// import LoginValidation from "@/apicalls/LoginValidation";
 export default {
   name: "MainComponent",
 
@@ -11,6 +12,15 @@ export default {
   props: {
     msg: String
   },
+
+  data: () => ({
+
+  }),
+
+  mounted: async () => {
+
+  },
+
 }
 </script>
 

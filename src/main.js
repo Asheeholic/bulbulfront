@@ -3,6 +3,7 @@ import App from './App.vue'
 import vuetify from './plugins/vuetify'
 import axios from 'axios'
 import routers from './routers/index.js'
+import VueCookies from 'vue-cookies'
 import { loadFonts } from './plugins/webfontloader'
 
 loadFonts()
@@ -19,6 +20,15 @@ app.use(vuetify);
 
 // router
 app.use(routers);
+
+// vue-cookies
+app.use(VueCookies, {
+    expireTimes: "1d",
+    secure: true,
+
+});
+
+
 
 // mount
 app.mount('#app')

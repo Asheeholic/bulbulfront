@@ -60,28 +60,12 @@ export default {
   }),
 
   methods: {
-    // submit 펑션
-    async submit(event) {
-      this.loading = true;
-      console.log("submit login");
-
-      // valid 는 무조건 await 로 받아야함
-      const resultValid = await event;
-      if (!resultValid.valid) {
-        this.loading = false;
-        console.log("submit login fail");
-        return;
-      }
-
-      const results = await this.loginApi(this.username, this.password)
-      console.log(results)
-      this.loading = false;
-      this.username = '';
-      this.password = '';
-      // this.$router.push('/home')
-    },
-
-    // 로그인 API
+    /**
+     * Login Api
+     * @param username
+     * @param password
+     * @returns {Promise<null>}
+     */
     async loginApi(username, password) {
 
       //parameter test
@@ -89,7 +73,6 @@ export default {
       console.log(username, password);
 
       // axios 이렇게 해야함..
-      // 나중에 로컬스토리지 저장 활용 ㄱㄱ
       let response = null;
       await this.$axios.get('https://jsonplaceholder.typicode.com/todos/1')
           .then(res => {
@@ -99,8 +82,57 @@ export default {
             return err;
           })
       return response;
-    }
+    },
 
+    /**
+     * Save Token To Cookies
+     * @param token
+     * @returns {Promise<void>}
+     */
+    async saveTokenToCookies(token) {
+      console.log(token);
+
+      await this.$cookies.set('token', token, '1d');
+
+      const cookie = await this.$cookies.get('token');
+      console.log(cookie);
+    },
+
+
+    /**
+     * Submit Function
+     * @param event
+     * @returns {Promise<void>}
+     */
+    async submit(event) {
+      this.loading = true;
+      console.log("submit login");
+
+      // valid 는 무조건 await 로 받아야함
+      const resultValid = await event;
+      if (!resultValid.valid) {
+        this.loading = false;
+        console.log("submit login fail because of valid");
+        return;
+      }
+
+      const results = await this.loginApi(this.username, this.password)
+
+      if (!results) {
+        this.loading = false;
+        console.log("submit login fail because of loginApi");
+        return;
+      }
+
+      await this.saveTokenToCookies(results);
+      console.log(results)
+      this.loading = false;
+      this.username = '';
+      this.password = '';
+      this.$router.push({
+        path: '/main'
+      })
+    },
   }
 }
 </script>
