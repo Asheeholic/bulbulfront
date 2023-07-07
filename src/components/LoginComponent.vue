@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import globalAPIAddress from "@/axioses/globalAPIAddress";
 export default {
   name: "LoginComponent.vue",
   data: () => ({
@@ -74,11 +75,16 @@ export default {
 
       // axios 이렇게 해야함..
       let response = null;
-      await this.$axios.get('https://jsonplaceholder.typicode.com/todos/1')
+      await this.$axios.post(globalAPIAddress + '/members/login', {
+        memberId: username,
+        password: password
+      })
           .then(res => {
             response = res.data;
           })
           .catch(err => {
+            console.log(err.message)
+            this.password = ''
             return err;
           })
       return response;
@@ -90,12 +96,7 @@ export default {
      * @returns {Promise<void>}
      */
     async saveTokenToCookies(token) {
-      console.log(token);
-
-      await this.$cookies.set('token', token, '1d');
-
-      const cookie = await this.$cookies.get('token');
-      console.log(cookie);
+      await this.$cookies.set('token', token.accessToken, '1d');
     },
 
 

@@ -15,6 +15,7 @@ const app = createApp(App)
 // axios
 app.config.globalProperties.$axios = axios;
 
+
 // vuetify
 app.use(vuetify);
 

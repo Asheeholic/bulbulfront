@@ -6,28 +6,28 @@
 // [라우터 import 수행 실시]
 import { createWebHistory, createRouter } from 'vue-router';
 import VueCookies from 'vue-cookies';
+import loginValidation from "@/axioses/loginValidation";
 
 // [라우터 path 접속 경로 설정]
 const routes = [
     {
         path: "/", // [경로]
-        name: "main", // [이름]
-        component: () => import('@/components/MainComponent.vue') // [로드 파일]
+        redirect: { name : "main" }, // [경로로 접속 시 리다이렉트 경로]
     },
     {
-        path: "/hello", // [경로]
-        name: "hello", // [이름]
-        component: () => import('@/components/HelloWorld.vue') // [로드 파일]
+        path: "/hello",
+        name: "hello",
+        component: () => import('@/components/HelloWorld.vue')
     },
     {
-        path: "/main", // [경로]
-        name: "main", // [이름]
-        component: () => import('@/components/MainComponent.vue') // [로드 파일]
+        path: "/main",
+        name: "main",
+        component: () => import('@/components/MainComponent.vue')
     },
     {
         path: "/login",
         name: "login",
-        component: () => import('@/components/LoginComponent.vue')
+        component: () => import('@/components/LoginComponent.vue'),
     }
 ];
 
@@ -49,24 +49,33 @@ const router = createRouter({
 //   else next()
 // })
 
-router.beforeEach(async (to, from, next) => {
-    // [로그인 여부 확인]
-    const token = VueCookies.get('token');
-    console.log("before If")
+const toFromLog = (to, from) => {
     console.log("to.name");
     console.log(to.name);
     console.log("from.name");
     console.log(from.name);
-    console.log(token)
-    if (!token && (to.name !== 'login')) {
-        console.log("In If")
-        console.log("to.name");
-        console.log(to.name);
-        console.log("from.name");
-        console.log(from.name);
-        console.log(token)
+}
+
+router.beforeEach(async (to, from, next) => {
+    // [로그인 여부 확인]
+    const token = VueCookies.get('token');
+
+    console.log("before If");
+    toFromLog(to, from);
+
+    const isAuthenticate = await loginValidation(token);
+
+    if (!isAuthenticate && (to.name !== 'login')) {
+
+        console.log("In If");
+        toFromLog(to, from);
+        console.log(token);
+
         next('/login');
-    } else next();
+    } else {
+        await VueCookies.keys().forEach(cookie => VueCookies.remove(cookie))
+        next();
+    }
 });
 
 export default router;
