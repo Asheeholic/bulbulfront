@@ -8,33 +8,19 @@ import { createWebHistory, createRouter } from 'vue-router';
 import VueCookies from 'vue-cookies';
 import loginValidation from "@/axioses/loginValidation";
 
+// 라우트 임포트
+import etcRoute from "@/routers/etcRoute";
+import authRoute from "@/routers/authRoute";
+import mainRoute from "@/routers/mainRoute";
+import backupRoute from "@/routers/backupRoute";
+
 // [라우터 path 접속 경로 설정]
 const routes = [
-    {
-        path: "/main",
-        name: "main",
-        component: () => import('@/components/MainComponent.vue')
-    },
-    {
-        path: "/login",
-        name: "login",
-        component: () => import('@/components/LoginComponent.vue'),
-    },
-
-    {
-        path: '/:pathMatch(.*)*',
-        redirect: "/404"
-    },
-    {
-        path: "/404",
-        name: "NotFound",
-        component: () => import('@/components/NotFound.vue'),
-    },
-    {
-        path: "/", // [경로]
-        redirect: { name : "main" }, // [경로로 접속 시 리다이렉트 경로]
-    },
-];
+    ...authRoute,
+    ...mainRoute,
+    ...etcRoute,
+    ...backupRoute
+]
 
 // [라우터 설정 실시]
 const router = createRouter({
