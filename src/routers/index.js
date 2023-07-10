@@ -11,15 +11,6 @@ import loginValidation from "@/axioses/loginValidation";
 // [라우터 path 접속 경로 설정]
 const routes = [
     {
-        path: "/", // [경로]
-        redirect: { name : "main" }, // [경로로 접속 시 리다이렉트 경로]
-    },
-    {
-        path: "/hello",
-        name: "hello",
-        component: () => import('@/components/HelloWorld.vue')
-    },
-    {
         path: "/main",
         name: "main",
         component: () => import('@/components/MainComponent.vue')
@@ -28,7 +19,21 @@ const routes = [
         path: "/login",
         name: "login",
         component: () => import('@/components/LoginComponent.vue'),
-    }
+    },
+
+    {
+        path: '/:pathMatch(.*)*',
+        redirect: "/404"
+    },
+    {
+        path: "/404",
+        name: "NotFound",
+        component: () => import('@/components/NotFound.vue'),
+    },
+    {
+        path: "/", // [경로]
+        redirect: { name : "main" }, // [경로로 접속 시 리다이렉트 경로]
+    },
 ];
 
 // [라우터 설정 실시]
@@ -56,6 +61,7 @@ const toFromLog = (to, from) => {
     console.log(from.name);
 }
 
+// 라우터 마다 접근시 시행되는 함수
 router.beforeEach(async (to, from, next) => {
     // [로그인 여부 확인]
     const token = VueCookies.get('token');
@@ -63,19 +69,25 @@ router.beforeEach(async (to, from, next) => {
     console.log("before If");
     toFromLog(to, from);
 
+    // 억지로 login 창 들어오면 바로 로그아웃
+    if (to.name === 'login') {
+        await VueCookies.keys().forEach(cookie => VueCookies.remove(cookie))
+    }
+
     const isAuthenticate = await loginValidation(token);
 
+    // 비인가 구역 접근시 로그아웃 후 로그인 진입
     if (!isAuthenticate && (to.name !== 'login')) {
 
         console.log("In If");
         toFromLog(to, from);
         console.log(token);
 
-        next('/login');
-    } else {
         await VueCookies.keys().forEach(cookie => VueCookies.remove(cookie))
-        next();
-    }
+
+        next('/login');
+    } else next();
+
 });
 
 export default router;

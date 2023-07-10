@@ -1,23 +1,25 @@
 <template>
   <v-app>
-    <v-main>
-<!--      <HelloWorld/>-->
-      <div>
-        <router-view/>
+    <v-layout>
+      <div v-show="$route.name!=='login'">
+        <NavigationComponent/>
       </div>
-    </v-main>
+      <v-main>
+        <router-view/>
+      </v-main>
+    </v-layout>
   </v-app>
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
+import NavigationComponent from "./components/drawer/NavigationComponent";
 
 export default {
   name: 'App',
 
-  // components: {
-  //   HelloWorld,
-  // },
+  components: {
+    NavigationComponent,
+  },
   // [생명 주기 : 라이프 사이클]
   // beforeCreate() {
   //   console.log("");
@@ -70,8 +72,12 @@ export default {
 
   // [컴포넌트 생성 시 초기 데이터 설정 (리턴 값 지정)]
   data: () => ({
-    data: "APP VUE"
+    data: "APP VUE",
   }),
+
+  computed: {
+
+  }
 }
 </script>
 <style>

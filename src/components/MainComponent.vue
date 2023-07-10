@@ -3,7 +3,6 @@
 </template>
 
 <script>
-// import LoginValidation from "@/apicalls/LoginValidation";
 export default {
   name: "MainComponent",
 
@@ -11,14 +10,6 @@ export default {
   // [형태 : <MainComponent msg="MainComponent"/>]
   props: {
     msg: String
-  },
-
-  data: () => ({
-
-  }),
-
-  mounted: async () => {
-
   },
 
 }
