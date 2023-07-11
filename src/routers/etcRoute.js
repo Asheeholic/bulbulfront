@@ -6,7 +6,7 @@ const etcRoute = [
     {
         path: "/404",
             name: "NotFound",
-        component: () => import('@/components/NotFound.vue'),
+        component: () => import('@/components/drawer/NotFound.vue'),
     },
     {
         path: "/", // [경로]

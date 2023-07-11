@@ -12,7 +12,7 @@ const authRoute = [
     {
         path: "/my-account",
         name: "myAccount",
-        component: () => import('@/components/MyAccountComponent.vue'),
+        component: () => import('@/components/auth/MyAccountComponent.vue'),
     },
 ]
 

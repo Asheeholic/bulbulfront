@@ -10,8 +10,6 @@ export default {
   }),
   // eslint-disable-next-line no-unused-vars
   beforeRouteEnter(to, from, next) {
-    console.log(to.name);
-    console.log(from.name);
     next('/login')
   }
 }
