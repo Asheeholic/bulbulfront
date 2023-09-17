@@ -1,9 +1,15 @@
 import globalAPIAddress from "@/axioses/globalAPIAddress";
 import axios from "axios";
 
-const validation = async (token) => {
+/**
+ * backup API 호출 자바스크립트
+ * @param token : string
+ * @param data : FormData 형태
+ * @returns {Promise<boolean>}
+ */
+const backupApi = async (token, data) => {
 
-    console.log("validation");
+    console.log("backupApi");
     let result = false;
 
     if (token == null || !token) {
@@ -13,9 +19,10 @@ const validation = async (token) => {
 
     const bearerAccessToken = "Bearer " + token;
 
-    await axios.post(globalAPIAddress + '/members/test', null, {
+    await axios.post(globalAPIAddress + '/backup-files/upload', data, {
         headers: {
             'Authorization': bearerAccessToken,
+            'Content-Type': 'multipart/form-data'
         }
     }).then((res) => {
         if (res.data === "success") {
@@ -29,4 +36,4 @@ const validation = async (token) => {
     return result;
 }
 
-export default validation;
+export default backupApi;

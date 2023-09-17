@@ -1,37 +1,46 @@
 <template>
-  <v-sheet max-width="300" class="mx-auto">
-<!--    v-alert 넣기 -->
+  <v-card>
+    <v-sheet max-width="300" class="mx-auto">
+      <!--    v-alert 넣기 -->
 
-<!--    @submit.prevent="submit" => 이게 함수 실행 -->
-    <v-form
-        validate-on="submit lazy"
-        @submit.prevent="submit"
-    >
-      <!-- 유저네임
-      :rules -> v-bind:rulse="rules"
-      -->
-      <v-text-field
-          v-model="username"
-          :rules="usernameRules"
-          label="아이디"
-      ></v-text-field>
+      <!--    @submit.prevent="submit" => 이게 함수 실행 -->
+      <v-form
+          validate-on="submit lazy"
+          @submit.prevent="submit"
+      >
+        <v-card-title>
+          로그인
+        </v-card-title>
+        <v-card-text>
+          로그인 창입니다.
+        </v-card-text>
+        <!-- 유저네임
+        :rules -> v-bind:rulse="rules"
+        -->
+        <v-text-field
+            v-model="username"
+            :rules="usernameRules"
+            label="아이디"
+        ></v-text-field>
 
-      <v-text-field
-          v-model="password"
+        <v-text-field
+            v-model="password"
 
-          :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-          @click:append-inner="show1 = !show1"
-          :type="show1 ? 'text' : 'password'"
+            :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append-inner="show1 = !show1"
+            :type="show1 ? 'text' : 'password'"
 
-          :rules="[passwordRules.require, passwordRules.length]"
-          hint="패스워드는 최소한 8글자 이상입니다."
-          label="비밀번호"
+            :rules="[passwordRules.require, passwordRules.length]"
+            hint="패스워드는 최소한 8글자 이상입니다."
+            label="비밀번호"
 
-      ></v-text-field>
+        ></v-text-field>
 
-      <v-btn :loading="loading" type="submit" block class="mt-2" text="확인"/>
-    </v-form>
-  </v-sheet>
+        <v-btn :loading="loading" type="submit" block class="mt-2" text="확인"/>
+      </v-form>
+    </v-sheet>
+  </v-card>
+
 </template>
 
 <script>

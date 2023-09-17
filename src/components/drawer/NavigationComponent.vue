@@ -26,25 +26,25 @@
           prepend-icon="mdi-view-dashboard"
           title="메인"
           value="home"
-          @click="this.$router.push('/main');"
+          @click="routerPush('/main');"
       ></v-list-item>
       <v-list-item
           prepend-icon="mdi-account"
           title="내 계정"
           value="account"
-          @click="this.$router.push('/my-account');"
+          @click="routerPush('/my-account');"
       ></v-list-item>
       <v-list-item
           prepend-icon="mdi-format-list-checks"
           title="백업 현황"
           value="backupStatus"
-          @click="this.$router.push('/backup-status');"
+          @click="routerPush('/backup-status');"
       ></v-list-item>
       <v-list-item
           prepend-icon="mdi-folder-upload-outline"
           title="백업"
           value="backup"
-          @click="this.$router.push('/backup');"
+          @click="routerPush('/backup');"
       ></v-list-item>
       <v-list-item
           prepend-icon="mdi-logout"
@@ -81,22 +81,26 @@ export default {
   watch: {
     async $route(to, from) {
       if (to !== from) {
-        console.log("route changes recognized")
-        console.log(to.name)
-        console.log(from.name)
-        console.log(this.$cookies.get('token'))
+        // console.log("route changes recognized")
+        // console.log(to.name)
+        // console.log(from.name)
+        // console.log(this.$cookies.get('token'))
 
-        await this.$axios.get(GlobalAPIAddress + "/members/username", {
-          headers: {
-            'Authorization': 'Bearer ' + this.$cookies.get('token'),
-          }
-        }).then((res) => {
-          console.log(res)
-          this.username = res.data;
-        }).catch((error) => {
-          console.error(error)
+        try {
+          await this.$axios.get(GlobalAPIAddress + "/members/username", {
+            headers: {
+              'Authorization': 'Bearer ' + this.$cookies.get('token'),
+            }
+          }).then((res) => {
+            // console.log(res)
+            this.username = res.data;
+          }).catch((error) => {
+            console.error(error)
+            this.username = "아무개";
+          })
+        } catch {
           this.username = "아무개";
-        })
+        }
       }
     }
   },
@@ -120,7 +124,8 @@ export default {
       } else {
         this.rail = false;
       }
-    }
+    },
+    routerPush(path) { if (this.rail === false) { this.$router.push(path) }}
   }
 }
 </script>

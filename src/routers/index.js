@@ -6,7 +6,7 @@
 // [라우터 import 수행 실시]
 import { createWebHistory, createRouter } from 'vue-router';
 import VueCookies from 'vue-cookies';
-import loginValidation from "@/axioses/loginValidation";
+import loginValidation from "@/axioses/account/loginValidation";
 
 // 라우트 임포트
 import etcRoute from "@/routers/etcRoute";
@@ -40,20 +40,20 @@ const router = createRouter({
 //   else next()
 // })
 
-const toFromLog = (to, from) => {
-    console.log("to.name");
-    console.log(to.name);
-    console.log("from.name");
-    console.log(from.name);
-}
+// const toFromLog = (to, from) => {
+//     console.log("to.name");
+//     console.log(to.name);
+//     console.log("from.name");
+//     console.log(from.name);
+// }
 
 // 라우터 마다 접근시 시행되는 함수
 router.beforeEach(async (to, from, next) => {
     // [로그인 여부 확인]
     const token = VueCookies.get('token');
 
-    console.log("before If");
-    toFromLog(to, from);
+    // console.log("before If");
+    // toFromLog(to, from);
 
     // 억지로 login 창 들어오면 바로 로그아웃
     if (to.name === 'login') {
@@ -65,14 +65,15 @@ router.beforeEach(async (to, from, next) => {
     // 비인가 구역 접근시 로그아웃 후 로그인 진입
     if (!isAuthenticate && (to.name !== 'login')) {
 
-        console.log("In If");
-        toFromLog(to, from);
-        console.log(token);
+        // console.log("In If");
+        // toFromLog(to, from);
+        // console.log(token);
 
         await VueCookies.keys().forEach(cookie => VueCookies.remove(cookie))
 
         next('/login');
     } else next();
+
 
 });
 
